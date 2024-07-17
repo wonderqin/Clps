@@ -1,0 +1,29 @@
+import java.text.DecimalFormat;
+
+public class NumberFormate {
+
+    public static String extractAndFormatNumber(String input) {
+        
+        String numberPart = input.replaceAll("[^\\d.]", "");
+
+        // 确保数字部分格式正确，即最多包含一个小数点
+        if (!numberPart.contains(".") || numberPart.split("\\.").length == 2) {
+            // 如果没有小数点，添加小数点和两位零
+            if (!numberPart.contains(".")) {
+                numberPart += ".00";
+            }
+            
+            // 使用DecimalFormat格式化数字，保留两位小数
+            DecimalFormat df = new DecimalFormat("0.00");
+            df.setGroupingUsed(false); 
+            
+            try {
+                double number = Double.parseDouble(numberPart);
+                return df.format(number);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("无效的数字部分: " + numberPart);
+            }
+        } else {
+            throw new IllegalArgumentException("无效的数字部分: " + numberPart);
+        }
+    }
